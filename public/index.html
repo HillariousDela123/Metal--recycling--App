@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoMetal — Sustainable Metal Recycling & Discovery</title>
+  <meta name="description" content="Discover certified metal recycling centers, live scrap metal market rates, schedule drop-offs, and track environmental impact.">
+  <!-- Google Fonts: Outfit & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Header Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand" id="brand-logo" role="button" tabindex="0">
+        <div class="brand-icon">
+          <i data-lucide="recycle"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">EcoMetal</span>
+          <span class="brand-tagline">Recycling Platform</span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-links">
+        <button class="nav-tab active" data-tab="metals" id="tab-metals">
+          <i data-lucide="layers"></i>
+          <span>Metal Types</span>
+        </button>
+        <button class="nav-tab" data-tab="discovery" id="tab-discovery">
+          <i data-lucide="map-pin"></i>
+          <span>Recycling Centers</span>
+        </button>
+        <button class="nav-tab" data-tab="plan" id="tab-plan">
+          <i data-lucide="calendar-plus"></i>
+          <span>Schedule Plan</span>
+        </button>
+        <button class="nav-tab" data-tab="history" id="tab-history">
+          <i data-lucide="history"></i>
+          <span>Activity & Plans</span>
+          <span class="badge" id="nav-plans-badge">0</span>
+        </button>
+        <button class="nav-tab test-tab" data-tab="tests" id="tab-tests">
+          <i data-lucide="check-circle-2"></i>
+          <span>TC01-TC07 Tests</span>
+          <span class="badge badge-success">Live</span>
+        </button>
+      </nav>
+
+      <!-- User Profile & Action Header -->
+      <div class="user-action-area">
+        <div class="eco-stat-chip" id="eco-stat-chip">
+          <i data-lucide="leaf"></i>
+          <span id="header-co2-stat">154 kg CO₂</span>
+        </div>
+        <div class="user-profile-button" id="user-profile-btn" role="button" tabindex="0">
+          <div class="user-avatar" id="user-avatar-initials">AT</div>
+          <div class="user-info-text">
+            <span class="user-name" id="user-display-name">Alex Turner</span>
+            <span class="user-role" id="user-eco-points">640 Eco Points</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Application Body -->
+  <main class="main-content">
+
+    <!-- 1. METALS SELECTION TAB -->
+    <section class="tab-pane active" id="pane-metals">
+      <!-- Hero Welcome Banner -->
+      <div class="hero-card">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <i data-lucide="sparkles"></i>
+            <span>Circular Economy Network</span>
+          </div>
+          <h1>Turn Scrap Metal into <span class="text-gradient">Green Value</span></h1>
+          <p>Explore certified payout rates for copper, aluminium, steel, and alloys. Schedule verified drop-offs and prevent toxic mining footprints.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="btn-hero-find-centers">
+              <i data-lucide="compass"></i>
+              <span>Find Nearest Centers</span>
+            </button>
+            <button class="btn btn-secondary" id="btn-hero-create-plan">
+              <i data-lucide="plus-circle"></i>
+              <span>Book Drop-Off</span>
+            </button>
+          </div>
+        </div>
+        <!-- Live Market Metrics Widget -->
+        <div class="hero-stats-panel">
+          <div class="stat-box">
+            <span class="stat-number" id="hero-total-kg">85.5</span>
+            <span class="stat-label">Total Recycled (kg)</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number" id="hero-co2-saved">154</span>
+            <span class="stat-label">CO₂ Offset (kg)</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number" id="hero-active-plans">2</span>
+            <span class="stat-label">Tracked Plans</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metal Categories Grid Section -->
+      <div class="section-header">
+        <div>
+          <h2>Scrap Metal Categories</h2>
+          <p>Select any metal category to view live scrap value and nearby certified facilities.</p>
+        </div>
+        <div class="filter-controls">
+          <span class="live-indicator">
+            <span class="pulsing-dot"></span>
+            Market Rates Active
+          </span>
+        </div>
+      </div>
+
+      <div class="metals-grid" id="metals-grid-container">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+    </section>
+
+    <!-- 2. RECYCLING CENTERS & DISCOVERY TAB -->
+    <section class="tab-pane" id="pane-discovery">
+      <div class="discovery-header">
+        <div>
+          <h2>Certified Recycling Facilities</h2>
+          <p>Filter centers by accepted metal grades and distance from your location.</p>
+        </div>
+        <!-- View Toggle & Location Status -->
+        <div class="discovery-controls">
+          <div class="gps-badge">
+            <i data-lucide="crosshair"></i>
+            <span>GPS Active (Bay District)</span>
+          </div>
+          <div class="view-toggle">
+            <button class="toggle-btn active" id="btn-view-list">
+              <i data-lucide="list"></i>
+              <span>List</span>
+            </button>
+            <button class="toggle-btn" id="btn-view-map">
+              <i data-lucide="map"></i>
+              <span>Interactive Map</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & Filters Toolbar -->
+      <div class="search-toolbar">
+        <div class="search-input-wrapper">
+          <i data-lucide="search"></i>
+          <input type="text" id="service-search-input" placeholder="Search facilities by name, metal (Copper, Steel), or address...">
+        </div>
+        <div class="metal-filter-chips" id="service-filter-chips">
+          <button class="chip active" data-metal="All">All Metals</button>
+          <button class="chip" data-metal="Copper">Copper</button>
+          <button class="chip" data-metal="Aluminium">Aluminium</button>
+          <button class="chip" data-metal="Steel">Steel</button>
+          <button class="chip" data-metal="Brass">Brass</button>
+          <button class="chip" data-metal="Lead">Lead</button>
+          <button class="chip" data-metal="Cast Iron">Cast Iron</button>
+        </div>
+      </div>
+
+      <!-- List View Container -->
+      <div class="services-list-container" id="services-list-view">
+        <div class="services-grid" id="services-grid">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Map View Container (Interactive Radar & Pins) -->
+      <div class="services-map-container hidden" id="services-map-view">
+        <div class="interactive-radar-map" id="radar-map">
+          <div class="radar-circle circle-1"></div>
+          <div class="radar-circle circle-2"></div>
+          <div class="radar-circle circle-3"></div>
+          <div class="radar-sweep"></div>
+          <div class="radar-center-pin" title="Your GPS Location">
+            <i data-lucide="user"></i>
+          </div>
+          <!-- Pins injected dynamically -->
+          <div id="radar-pins-layer"></div>
+        </div>
+        <div class="map-preview-panel" id="map-preview-panel">
+          <span class="text-muted">Tap any pin on the map to preview facility specifications and directions.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SCHEDULE RECYCLING PLAN TAB -->
+    <section class="tab-pane" id="pane-plan">
+      <div class="plan-form-layout">
+        <div class="plan-form-card">
+          <div class="card-header-styled">
+            <div class="header-icon-box">
+              <i data-lucide="calendar"></i>
+            </div>
+            <div>
+              <h2>Schedule Drop-Off Appointment</h2>
+              <p>Book your recycling slot with certified weight verification and notifications.</p>
+            </div>
+          </div>
+
+          <form id="schedule-plan-form">
+            <div class="form-group">
+              <label for="plan-facility-select">Recycling Facility</label>
+              <select id="plan-facility-select" class="form-control" required>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="plan-metal-select">Metal Category</label>
+                <select id="plan-metal-select" class="form-control" required>
+                  <option value="Copper">Copper (Cu)</option>
+                  <option value="Aluminium">Aluminium (Al)</option>
+                  <option value="Steel">Steel (Fe-C)</option>
+                  <option value="Brass">Brass (Cu-Zn)</option>
+                  <option value="Lead">Lead (Pb)</option>
+                  <option value="Cast Iron">Cast Iron (Fe)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="plan-weight-input">Estimated Weight (kg)</label>
+                <div class="input-with-suffix">
+                  <input type="number" id="plan-weight-input" class="form-control" min="0.5" step="0.5" value="15" required>
+                  <span class="suffix">kg</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="plan-date-input">Drop-Off Date</label>
+                <input type="date" id="plan-date-input" class="form-control" required>
+              </div>
+              <div class="form-group">
+                <label for="plan-time-input">Estimated Time</label>
+                <input type="time" id="plan-time-input" class="form-control" value="10:00" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="plan-notes-input">Special Instructions / Materials Note</label>
+              <textarea id="plan-notes-input" class="form-control" rows="2" placeholder="e.g. Bundled clean copper piping, stripped cables..."></textarea>
+            </div>
+
+            <div class="toggle-control-box">
+              <div class="toggle-label-wrap">
+                <i data-lucide="bell" class="text-primary"></i>
+                <div>
+                  <strong>Appointment Reminders</strong>
+                  <p>Send local and push notifications 2 hours prior to scheduled drop-off</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="plan-reminder-toggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-plan">
+              <i data-lucide="check-circle"></i>
+              <span>Confirm & Lock In Plan</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Live Estimate & Carbon Impact Card -->
+        <div class="plan-summary-card">
+          <h3>Calculated Estimates</h3>
+          <div class="summary-metric">
+            <span class="summary-metric-label">Estimated Payout</span>
+            <span class="summary-metric-val text-success" id="calc-estimated-payout">$127.50</span>
+            <span class="summary-metric-sub" id="calc-rate-sub">Based on $8.50 / kg scrap rate</span>
+          </div>
+
+          <div class="summary-metric">
+            <span class="summary-metric-label">CO₂ Footprint Avoidance</span>
+            <span class="summary-metric-val text-copper" id="calc-co2-avoided">63.0 kg</span>
+            <span class="summary-metric-sub">Equivalent to driving 250+ km in a petrol car</span>
+          </div>
+
+          <div class="summary-info-box">
+            <i data-lucide="shield-check"></i>
+            <div>
+              <strong>Guaranteed Price Lock</strong>
+              <p>Booking through EcoMetal locks in your rate for 48 hours from scheduled drop-off.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. ACTIVITY & PLANS MANAGEMENT TAB -->
+    <section class="tab-pane" id="pane-history">
+      <div class="history-header">
+        <div>
+          <h2>User Activity & Recycling Plans</h2>
+          <p>Track your scheduled drop-offs, update milestone statuses, and view audit events.</p>
+        </div>
+        <button class="btn btn-secondary" id="btn-refresh-plans">
+          <i data-lucide="rotate-cw"></i>
+          <span>Refresh Data</span>
+        </button>
+      </div>
+
+      <!-- Segmented View Selector -->
+      <div class="segmented-control">
+        <button class="segment-btn active" id="seg-plans" data-seg="plans">
+          <i data-lucide="calendar"></i>
+          <span>Active & Completed Plans</span>
+        </button>
+        <button class="segment-btn" id="seg-timeline" data-seg="timeline">
+          <i data-lucide="activity"></i>
+          <span>Audit Log Timeline</span>
+        </button>
+      </div>
+
+      <!-- Plans Sub-Pane -->
+      <div id="subpane-plans" class="subpane active">
+        <div class="plans-list" id="plans-container">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Timeline Sub-Pane -->
+      <div id="subpane-timeline" class="subpane">
+        <div class="timeline-container" id="timeline-container">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. AUTOMATED TESTING DASHBOARD TAB (TC01 - TC07) -->
+    <section class="tab-pane" id="pane-tests">
+      <div class="tests-header-card">
+        <div class="tests-header-left">
+          <div class="test-badge-icon">
+            <i data-lucide="terminal"></i>
+          </div>
+          <div>
+            <h2>Functional Test Suite (TC01 — TC07)</h2>
+            <p>Live verification of Flutter/Express backend specifications and core recycling workflows.</p>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="btn-run-all-tests">
+          <i data-lucide="play-circle"></i>
+          <span>Execute All Test Cases</span>
+        </button>
+      </div>
+
+      <!-- Test Summary Scorecard -->
+      <div class="test-metrics-row">
+        <div class="test-stat-card">
+          <span class="stat-num" id="tests-total-count">7</span>
+          <span class="stat-text">Total Test Cases</span>
+        </div>
+        <div class="test-stat-card success">
+          <span class="stat-num text-success" id="tests-passed-count">7</span>
+          <span class="stat-text">Passed</span>
+        </div>
+        <div class="test-stat-card danger">
+          <span class="stat-num text-danger" id="tests-failed-count">0</span>
+          <span class="stat-text">Failed</span>
+        </div>
+        <div class="test-stat-card">
+          <span class="stat-num" id="tests-duration">12 ms</span>
+          <span class="stat-text">Execution Time</span>
+        </div>
+      </div>
+
+      <!-- Test Cases Breakdown Table/Cards -->
+      <div class="tests-table-wrapper">
+        <div class="tests-list" id="tests-results-list">
+          <!-- Rendered dynamically with live statuses -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Facility Details Modal -->
+  <div class="modal-overlay hidden" id="facility-modal">
+    <div class="modal-content">
+      <button class="modal-close" id="btn-close-modal">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="modal-body" id="facility-modal-body">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- User Profile / Auth Modal -->
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-content auth-modal-content">
+      <button class="modal-close" id="btn-close-auth-modal">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="auth-box">
+        <div class="auth-header">
+          <div class="brand-icon">
+            <i data-lucide="user-check"></i>
+          </div>
+          <h3 id="auth-modal-title">Sign In to EcoMetal</h3>
+          <p id="auth-modal-sub">Access your customized drop-off schedule and history.</p>
+        </div>
+
+        <form id="auth-form">
+          <div class="form-group" id="group-auth-name" style="display:none;">
+            <label>Full Name</label>
+            <input type="text" id="auth-name-input" class="form-control" placeholder="e.g. Sarah Connor">
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="auth-email-input" class="form-control" value="recycler@metaleco.org" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="auth-password-input" class="form-control" value="ScrapRecycle2026!" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="btn-auth-submit">
+            Sign In
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          <button type="button" class="btn btn-text" id="btn-toggle-auth-mode">
+            Don't have an account? Sign Up
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

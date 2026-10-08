@@ -1,0 +1,28 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+
+# Android / iOS build artifacts
+android/**/gradle-wrapper.jar
+.gradle/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
+
+# Environment and IDE
+.env
+.idea/
+.vscode/
+*.swp
+*.lock
+Thumbs.db
+.DS_Store
