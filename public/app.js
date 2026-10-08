@@ -3,7 +3,9 @@
 // Connected to Express REST API & Real-time State
 // ==========================================================================
 
-const API_BASE = window.location.origin;
+const API_BASE = (window.location.protocol === 'file:' || !window.location.origin || window.location.origin === 'null' || window.location.origin.startsWith('file:'))
+  ? 'http://localhost:3000'
+  : window.location.origin;
 
 // State Container
 const state = {
